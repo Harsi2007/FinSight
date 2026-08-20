@@ -1,5 +1,49 @@
 import java.util.*;
 public class PortfolioManager {
+	public static double invest(int quantity, double boughtPrice) {
+		return quantity*boughtPrice;
+	}
+	public static double cvalue(int quantity, double currentPrice) {
+		return quantity*currentPrice;
+	}
+	public static double returnPercentage(double Value, double investment) {
+		return ((Value-investment)/investment)*100;
+	}
+	public static void profitOrLoss(double investment, double currentValue, double total) {
+		if(currentValue>investment) {
+			System.out.println("Profit: "+(currentValue-investment));
+			total += (currentValue-investment);
+		}
+		else if(currentValue==investment) {
+			System.out.println("Neither Profit or Loss");
+		}
+		else {
+			System.out.println("Loss: "+(investment - currentValue));
+			total -= (investment - currentValue);
+		}
+	}
+	public static void OverallProfitOrLoss(double total) {
+		if(total>0) {
+			System.out.println("Overall Profit: "+total);
+		}
+		else if(total==0) {
+			System.out.println("Overall Neither Profit or Loss");
+		}
+		else {
+			System.out.println("Overall Loss: "+Math.abs(total));
+		}
+	}
+	public static void Growth(double boughtPrice, double currentPrice) {
+		if(currentPrice>boughtPrice) {
+			System.out.println("Bullish: "+(currentPrice-boughtPrice));
+		}
+		else if(currentPrice==boughtPrice) {
+			System.out.println("No Growth");
+		}
+		else {
+			System.out.println("Bearish: "+(boughtPrice-currentPrice));
+		}
+	}
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the number of Stocks");
@@ -18,9 +62,9 @@ public class PortfolioManager {
 			System.out.println("Enter the current price: ");
 			double currentPrice = sc.nextDouble();
 			sc.nextLine();
-			double investment = quantity*boughtPrice;
+			double investment = invest(quantity,boughtPrice);
 			totalInvestment += investment;
-			double currentValue = quantity*currentPrice;
+			double currentValue = cvalue(quantity,currentPrice);
 			totalCurrentValue += currentValue;
 			System.out.println(" ======================= ");
 			System.out.println("     STOCK PORTFOLIO     ");
@@ -29,23 +73,10 @@ public class PortfolioManager {
 			                   "\nCurrent Price: " + currentPrice+"\n");
 			System.out.println("Investment: "+investment);
 			System.out.println("Current value: "+currentValue);
-			if(currentValue>investment) {
-				System.out.println("\nStatus: PROFIT");
-				System.out.println("Profit: "+(currentValue-investment));
-				total += currentValue-investment;
-			}
-			else if(currentValue==investment) {
-				System.out.println("Neither Profit or Loss");
-			}
-			else {
-				System.out.println("\nStatus: LOSS");
-				System.out.println("Loss: "+(investment - currentValue));
-				total -= investment - currentValue;
-			}
-			double returnPercent = ((currentValue-investment)/investment)*100;
+			profitOrLoss(investment,currentValue,total);
+			double returnPercent = returnPercentage(currentValue,investment);
 			System.out.println("Return: "+returnPercent);
-			if(currentPrice>boughtPrice) System.out.println("Bullish");
-			else if(currentPrice<boughtPrice) System.out.println("Bearish");
+			Growth(boughtPrice,currentPrice);
 			System.out.println(" ======================= ");
 		}
 		System.out.println("\n ======================= ");
@@ -53,14 +84,8 @@ public class PortfolioManager {
 		System.out.println(" ======================= ");
 		System.out.println("Total Investment: "+totalInvestment);
 		System.out.println("Total Value: "+totalCurrentValue);
-		if(total>0){
-		    System.out.println("Overall Profit: "+total);
-		}
-		else if(total<0){
-		    System.out.println("Overall Loss: "+Math.abs(total));
-		}
-		else System.out.println("Overall Neither Profit or Loss");
-		double totalReturnPercent = ((totalCurrentValue - totalInvestment)/totalInvestment)*100;
+		OverallProfitOrLoss(total);
+		double totalReturnPercent = returnPercentage(totalCurrentValue, totalInvestment);
 		System.out.println("Overall Return: "+totalReturnPercent);
 		System.out.println(" ======================= ");
 	}
